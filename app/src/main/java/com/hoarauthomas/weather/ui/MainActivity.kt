@@ -1,10 +1,9 @@
 package com.hoarauthomas.weather.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
-import com.hoarauthomas.weather.R
+import androidx.appcompat.app.AppCompatActivity
 import com.hoarauthomas.weather.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
