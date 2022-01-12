@@ -3,7 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/perso/Desktop/AndroidStudio/Projet Meteo/app/src/main/res/layout/activity_main.xml" value="0.12604166666666666" />
+        <entry key="..\:/Users/perso/Desktop/AndroidStudio/Projet Meteo/app/src/main/res/layout/city_add_dialog_layout.xml" value="0.17864583333333334" />
         <entry key="..\:/Users/perso/Desktop/AndroidStudio/Projet Meteo/app/src/main/res/layout/fragment_cities.xml" value="0.17864583333333334" />
+        <entry key="..\:/Users/perso/Desktop/AndroidStudio/Projet Meteo/app/src/main/res/layout/fragment_city_details.xml" value="0.16927083333333334" />
         <entry key="..\:/Users/perso/Desktop/AndroidStudio/Projet Meteo/app/src/main/res/layout/fragment_github.xml" value="0.33611255862428346" />
         <entry key="..\:/Users/perso/Desktop/AndroidStudio/Projet Meteo/app/src/main/res/layout/fragment_item_list_cities.xml" value="0.25" />
         <entry key="..\:/Users/perso/Desktop/AndroidStudio/Projet Meteo/app/src/main/res/layout/item_city.xml" value="0.5" />

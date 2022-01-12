@@ -20,6 +20,7 @@ class CitiesAdapter(private val cities: List<City>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.cityNameView.text = cities[position].name
+        holder.cityNameView.tag = cities[position].id
     }
 
     override fun getItemCount(): Int {
