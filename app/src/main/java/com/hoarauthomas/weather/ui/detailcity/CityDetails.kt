@@ -1,23 +1,28 @@
-package com.hoarauthomas.weather.ui.list
+package com.hoarauthomas.weather.ui.detailcity
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.hoarauthomas.weather.R
 import com.hoarauthomas.weather.databinding.FragmentCityDetailsBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
+@AndroidEntryPoint
 class CityDetails : Fragment() {
-    // TODO: Rename and change types of parameters
+
     private var param1: String? = null
     private var param2: String? = null
 
+    private val viewModelWeather: DetailCityViewModel by viewModels()
 
     private lateinit var binding: FragmentCityDetailsBinding
 
@@ -42,6 +47,21 @@ class CityDetails : Fragment() {
 
         val bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigation)
         bottomNav.isVisible = false
+
+
+        viewModelWeather.getWeatherByCity("Rennes", "fr")
+
+
+
+
+        viewModelWeather.weatherLiveData().observe(viewLifecycleOwner){
+            Log.i("[WEATHER]", "Temperature : " + it.main?.temp + " " + it.name)
+        }
+
+
+
+
+
 
         return view
 

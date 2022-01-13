@@ -12,6 +12,7 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Qualifier
 import javax.inject.Singleton
 
@@ -22,8 +23,8 @@ object Injection {
     @Provides
     @Singleton
     fun provideRetrofit(): WeatherAPI = Retrofit.Builder()
-        .baseUrl("http://api.openweathermap.org/data/2.5")
-        //.addConverterFactory(GsonConverterFactory.create())
+        .baseUrl("http://api.openweathermap.org/data/2.5/")
+        .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(WeatherAPI::class.java)
 

@@ -22,6 +22,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.hoarauthomas.weather.R
 import com.hoarauthomas.weather.databinding.FragmentCitiesBinding
 import com.hoarauthomas.weather.models.City
+import com.hoarauthomas.weather.ui.detailcity.CityDetails
 import dagger.hilt.android.AndroidEntryPoint
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 

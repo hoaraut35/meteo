@@ -22,7 +22,10 @@ class WeatherRepository @Inject constructor(private val weatherAPI : WeatherAPI)
 
     //for query API...
     fun getWeatherByCity(city: String, country: String){
-        weatherAPI.getWeatherByCity(city, country).enqueue(object : Callback<ResponseWeather> {
+
+        val cityAndCountry = "$city,$country"
+
+        weatherAPI.getWeatherByCity(cityAndCountry).enqueue(object : Callback<ResponseWeather> {
 
             override fun onResponse(
                 call: Call<ResponseWeather>,

@@ -1,14 +1,16 @@
 package com.hoarauthomas.weather.ui.list
 
 import androidx.lifecycle.*
+import com.hoarauthomas.weather.api.ResponseWeather
 import com.hoarauthomas.weather.models.City
 import com.hoarauthomas.weather.repositories.DatabaseRepository
+import com.hoarauthomas.weather.repositories.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CitiesViewModel @Inject constructor(private val databaseRepository: DatabaseRepository) :
+class CitiesViewModel @Inject constructor(private val databaseRepository: DatabaseRepository, private val weatherRepository: WeatherRepository) :
     ViewModel() {
 
     fun getCities() = databaseRepository.getCities().asLiveData()
@@ -24,5 +26,6 @@ class CitiesViewModel @Inject constructor(private val databaseRepository: Databa
     suspend fun updateCity(city: City) = viewModelScope.launch { databaseRepository.update(city) }
 
     fun deleteCity(city: City) = viewModelScope.launch { databaseRepository.deleteCity(city) }
+
 
 }
