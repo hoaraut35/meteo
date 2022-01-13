@@ -5,8 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.hoarauthomas.weather.R
-import com.hoarauthomas.weather.databinding.FragmentCitiesBinding
+import com.hoarauthomas.weather.databinding.FragmentCityDetailsBinding
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -17,6 +19,7 @@ class CityDetails : Fragment() {
     private var param2: String? = null
 
 
+    private lateinit var binding: FragmentCityDetailsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,14 +27,24 @@ class CityDetails : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_city_details, container, false)
+
+        binding = FragmentCityDetailsBinding.inflate(inflater, container, false)
+        val view = binding.root
+
+        val bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigation)
+        bottomNav.isVisible = false
+
+        return view
+
     }
 
     companion object {

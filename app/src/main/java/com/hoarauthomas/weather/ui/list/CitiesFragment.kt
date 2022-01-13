@@ -11,11 +11,13 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.hoarauthomas.weather.R
 import com.hoarauthomas.weather.databinding.FragmentCitiesBinding
@@ -53,6 +55,9 @@ class CitiesFragment : Fragment() {
 
         binding = FragmentCitiesBinding.inflate(inflater, container, false)
         val view = binding.root
+
+        val bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigation)
+        bottomNav.isVisible = true
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
 
@@ -169,6 +174,8 @@ class CitiesFragment : Fragment() {
 
         }
 
+        //setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
+
 
         viewModelCities.cityInsertedLive().observe(viewLifecycleOwner) {
             Toast.makeText(requireContext(), "new city added ", Toast.LENGTH_LONG).show()
@@ -227,11 +234,14 @@ class CitiesFragment : Fragment() {
 
     private fun openFrag(i: Int) {
 
-        val ft = childFragmentManager.beginTransaction()
+        val ft = parentFragmentManager.beginTransaction()
 
         when (i) {
-            1 -> ft.replace(R.id.mainFragmentContainer, CityDetails.newInstance("t", "y"))
+            1 -> ft.replace(R.id.mainFragmentContainer, CityDetails.newInstance("t", "y"),"detail").addToBackStack("detail")
         }
+
+
+
 
         ft.commit()
 

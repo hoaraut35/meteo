@@ -2,6 +2,7 @@ package com.hoarauthomas.weather.injection
 
 import android.content.Context
 import androidx.room.Room
+import com.hoarauthomas.weather.api.WeatherAPI
 import com.hoarauthomas.weather.database.WeatherDatabase
 import dagger.Module
 import dagger.Provides
@@ -10,12 +11,22 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
+import retrofit2.Retrofit
 import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object Injection {
+
+    @Provides
+    @Singleton
+    fun provideRetrofit(): WeatherAPI = Retrofit.Builder()
+        .baseUrl("http://api.openweathermap.org/data/2.5")
+        //.addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(WeatherAPI::class.java)
+
 
     @Provides
     @Singleton
