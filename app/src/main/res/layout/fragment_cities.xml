@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         app:fabSize="mini"
+        android:src="@drawable/ic_baseline_add_location_24"
         app:layout_constraintBottom_toBottomOf="@id/recyclerView"
         app:layout_constraintRight_toRightOf="parent">
 

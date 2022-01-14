@@ -9,5 +9,6 @@
     <string name="city_add_text_btn">Confirm</string>
     <string name="city_cancel_text_btn">Cancel</string>
     <string name="hint_city_name">Enter city name here</string>
+    <string name="city_name_view">city_name_view</string>
 
 </resources>

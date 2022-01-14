@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.hoarauthomas.weather.R
 import com.hoarauthomas.weather.databinding.ActivityMainBinding
 import com.hoarauthomas.weather.ui.list.CitiesFragment
-import com.hoarauthomas.weather.ui.list.GithubFragment
+import com.hoarauthomas.weather.ui.other.GithubFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

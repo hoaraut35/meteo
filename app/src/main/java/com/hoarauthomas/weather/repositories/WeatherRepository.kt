@@ -1,5 +1,6 @@
 package com.hoarauthomas.weather.repositories
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.hoarauthomas.weather.api.ResponseWeather
@@ -14,10 +15,16 @@ import javax.inject.Singleton
 class WeatherRepository @Inject constructor(private val weatherAPI : WeatherAPI) {
 
     private var mutableLiveDataWeather = MutableLiveData<ResponseWeather>()
+    private var mutableLiveDataWeatherSearchFlag = MutableLiveData<Boolean>()
 
     //for ViewModel...
     fun getWeatherLiveData(): LiveData<ResponseWeather>{
         return mutableLiveDataWeather
+    }
+
+    //get flag
+    fun getFlag():LiveData<Boolean>{
+        return mutableLiveDataWeatherSearchFlag
     }
 
     //for query API...
@@ -33,17 +40,18 @@ class WeatherRepository @Inject constructor(private val weatherAPI : WeatherAPI)
             ) {
                 if (response.isSuccessful){
                     mutableLiveDataWeather.value = response.body()!!
+                    mutableLiveDataWeatherSearchFlag.value = false
                 }
+
             }
 
             override fun onFailure(call: Call<ResponseWeather>, t: Throwable) {
+
+                   mutableLiveDataWeatherSearchFlag.value = true
 
             }
 
         })
     }
-
-
-
 
 }

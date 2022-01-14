@@ -16,9 +16,14 @@ class DetailCityViewModel @Inject constructor(private val weatherRepository: Wea
         weatherRepository.getWeatherByCity(city,country)
     }
 
-    //to observe weather...
+    //to observe weather result ...
     fun weatherLiveData(): LiveData<ResponseWeather> {
         return weatherRepository.getWeatherLiveData()
+    }
+
+    //to observe search weather flag...
+    fun weatherLiveDataFlag(): LiveData<Boolean> {
+        return weatherRepository.getFlag()
     }
 
 }

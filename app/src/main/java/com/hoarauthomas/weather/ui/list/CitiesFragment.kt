@@ -98,7 +98,7 @@ class CitiesFragment : Fragment() {
                         }
 
                         if (direction == ItemTouchHelper.LEFT) {
-                           openFrag(1)
+                           openFrag(1,viewHolder.itemView.findViewById<TextView>(R.id.city_name_view).text.toString())
                         }
 
 
@@ -175,9 +175,6 @@ class CitiesFragment : Fragment() {
 
         }
 
-        //setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
-
-
         viewModelCities.cityInsertedLive().observe(viewLifecycleOwner) {
             Toast.makeText(requireContext(), "new city added ", Toast.LENGTH_LONG).show()
         }
@@ -202,9 +199,6 @@ class CitiesFragment : Fragment() {
                 .show()
         }
 
-
-
-
         return view
     }
 
@@ -213,19 +207,14 @@ class CitiesFragment : Fragment() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Are you sure ?")
             .setMessage("You can delete this city,  must enter a new name to create a city ...")
-
             .setPositiveButton(resources.getString(R.string.city_add_text_btn)) { dialog, _ ->
-
-                //recyclerView.adapter?.notifyItemRemoved(viewHolder.absoluteAdapterPosition)
 
             }
             .setNegativeButton(resources.getString(R.string.city_cancel_text_btn)) { _, _ ->
-
                 Toast.makeText(requireContext(), "Cancel", Toast.LENGTH_SHORT).show()
             }
             .show()
 
-//        recyclerView.adapter?.notifyItemRemoved(viewHolder.absoluteAdapterPosition)
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView, listCities: List<City>) {
@@ -233,12 +222,12 @@ class CitiesFragment : Fragment() {
         recyclerView.adapter = CitiesAdapter(listCities)
     }
 
-    private fun openFrag(i: Int) {
+    private fun openFrag(i: Int, city:String) {
 
         val ft = parentFragmentManager.beginTransaction()
 
         when (i) {
-            1 -> ft.replace(R.id.mainFragmentContainer, CityDetails.newInstance("t", "y"),"detail").addToBackStack("detail")
+            1 -> ft.replace(R.id.mainFragmentContainer, CityDetails.newInstance(city, "y"),"detail").addToBackStack("detail")
         }
 
 

@@ -1,4 +1,4 @@
-package com.hoarauthomas.weather.ui.list
+package com.hoarauthomas.weather.ui.other
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

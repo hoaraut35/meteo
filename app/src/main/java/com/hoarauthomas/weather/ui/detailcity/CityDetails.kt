@@ -1,13 +1,13 @@
 package com.hoarauthomas.weather.ui.detailcity
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.hoarauthomas.weather.R
 import com.hoarauthomas.weather.databinding.FragmentCityDetailsBinding
@@ -31,16 +31,17 @@ class CityDetails : Fragment() {
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
+
+            if (param1 != null) {
+                viewModelWeather.getWeatherByCity(param1.toString(), "fr")
+            }
         }
-
-
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentCityDetailsBinding.inflate(inflater, container, false)
         val view = binding.root
@@ -48,20 +49,38 @@ class CityDetails : Fragment() {
         val bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigation)
         bottomNav.isVisible = false
 
+        viewModelWeather.weatherLiveDataFlag().observe(viewLifecycleOwner) {
+            if(it){
+                binding.progressHorizontal.show()
+                binding.cityName.text = ""
+                binding.cityTemperature.text = ""
+                binding.cityPressure.text = ""
+                binding.cityIconText.text = ""
+                binding.weatherIcon.isVisible = false
+            }else{
+                binding.progressHorizontal.hide()
+            }
 
-        viewModelWeather.getWeatherByCity("Rennes", "fr")
-
-
-
-
-        viewModelWeather.weatherLiveData().observe(viewLifecycleOwner){
-            Log.i("[WEATHER]", "Temperature : " + it.main?.temp + " " + it.name)
         }
 
+        //observe data...
+        viewModelWeather.weatherLiveData().observe(viewLifecycleOwner) {
 
+                //binding.progressHorizontal.hide()
+                binding.cityName.text = it.name.toString()
+                binding.cityTemperature.text = "${it.main?.temp.toString()} °C"
+                binding.cityPressure.text = "${it.main?.pressure.toString()} hPa"
 
+                //https://openweathermap.org/weather-conditions
+                binding.weatherIcon.isVisible = true
+                Glide.with(binding.weatherIcon)
+                    .load("http://openweathermap.org/img/wn/" + it.weather?.get(0)?.icon + "@2x.png")
+                    .centerCrop()
+                    .into(binding.weatherIcon)
 
+                binding.cityIconText.text = it.weather?.get(0)?.main.toString()
 
+        }
 
         return view
 
