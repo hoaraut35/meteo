@@ -50,14 +50,14 @@ class CityDetails : Fragment() {
         bottomNav.isVisible = false
 
         viewModelWeather.weatherLiveDataFlag().observe(viewLifecycleOwner) {
-            if(it){
+            if (it) {
                 binding.progressHorizontal.show()
                 binding.cityName.text = ""
                 binding.cityTemperature.text = ""
                 binding.cityPressure.text = ""
                 binding.cityIconText.text = ""
                 binding.weatherIcon.isVisible = false
-            }else{
+            } else {
                 binding.progressHorizontal.hide()
             }
 
@@ -66,19 +66,20 @@ class CityDetails : Fragment() {
         //observe data...
         viewModelWeather.weatherLiveData().observe(viewLifecycleOwner) {
 
-                //binding.progressHorizontal.hide()
-                binding.cityName.text = it.name.toString()
-                binding.cityTemperature.text = "${it.main?.temp.toString()} °C"
-                binding.cityPressure.text = "${it.main?.pressure.toString()} hPa"
+            //binding.progressHorizontal.hide()
+            binding.cityName.text = it.name.toString()
+            binding.cityTemperature.text = "Temperature: ${it.main?.temp.toString()} °C"
+            binding.cityHumidity.text = "Humidity: ${it.main?.humidity.toString()} %"
+            binding.cityPressure.text = "Pressure: ${it.main?.pressure.toString()} hPa"
 
-                //https://openweathermap.org/weather-conditions
-                binding.weatherIcon.isVisible = true
-                Glide.with(binding.weatherIcon)
-                    .load("http://openweathermap.org/img/wn/" + it.weather?.get(0)?.icon + "@2x.png")
-                    .centerCrop()
-                    .into(binding.weatherIcon)
+            //https://openweathermap.org/weather-conditions
+            binding.weatherIcon.isVisible = true
+            Glide.with(requireView())
+                .load("http://openweathermap.org/img/wn/${it.weather?.get(0)?.icon}@2x.png")
+                .centerCrop()
+                .into(binding.weatherIcon)
 
-                binding.cityIconText.text = it.weather?.get(0)?.main.toString()
+            binding.cityIconText.text = it.weather?.get(0)?.description.toString()
 
         }
 
