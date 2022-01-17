@@ -21,16 +21,13 @@ class ChatAdapter(options: FirestoreRecyclerOptions<ChatMessage>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, model: ChatMessage) {
 
+        holder.textViewDate.text = model.dateCreated
         holder.textViewPriority.text = model.message
 
     }
 
-    override fun onDataChanged() {
-        super.onDataChanged()
-    }
-
-
     inner class ViewHolder(binding: ItemChatBinding) : RecyclerView.ViewHolder(binding.root) {
+        var textViewDate : TextView = binding.messageDate
         var textViewPriority: TextView = binding.messageText
     }
 
