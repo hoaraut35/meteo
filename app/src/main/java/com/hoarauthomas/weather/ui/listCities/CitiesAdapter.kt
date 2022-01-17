@@ -1,4 +1,4 @@
-package com.hoarauthomas.weather.ui.list
+package com.hoarauthomas.weather.ui.listCities
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

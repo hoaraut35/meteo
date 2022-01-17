@@ -1,7 +1,6 @@
-package com.hoarauthomas.weather.ui.list
+package com.hoarauthomas.weather.ui.listCities
 
 import androidx.lifecycle.*
-import com.hoarauthomas.weather.api.ResponseWeather
 import com.hoarauthomas.weather.models.City
 import com.hoarauthomas.weather.repositories.DatabaseRepository
 import com.hoarauthomas.weather.repositories.WeatherRepository

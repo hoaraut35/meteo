@@ -2,6 +2,7 @@ package com.hoarauthomas.weather.injection
 
 import android.content.Context
 import androidx.room.Room
+import com.google.firebase.firestore.FirebaseFirestore
 import com.hoarauthomas.weather.api.WeatherAPI
 import com.hoarauthomas.weather.database.WeatherDatabase
 import dagger.Module
@@ -42,6 +43,11 @@ object Injection {
     @Provides
     @Singleton
     fun provideDao(database: WeatherDatabase) = database.weatherDao()
+
+
+//    @Provides
+//    @Singleton
+//    fun provideFirestore() = FirebaseFirestore.getInstance()
 
     @ApplicationScope
     @Provides

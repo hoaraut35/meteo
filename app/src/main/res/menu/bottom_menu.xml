@@ -5,12 +5,18 @@
         android:id="@+id/page_1"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_cloud_24"
-        android:title="@string/text_bottom_1"/>
+        android:title="@string/menu_weather"/>
 
     <item
         android:id="@+id/page_2"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_cloud_24"
-        android:title="@string/text_bottom_2"/>
+        android:title="@string/menu_firestore"/>
+
+    <item
+        android:id="@+id/system_page"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="@string/text_system"/>
 
 </menu>

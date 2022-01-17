@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "734864996445",
+    "project_id": "weather-733fe",
+    "storage_bucket": "weather-733fe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:734864996445:android:53b9bef7423c68c8fd35b4",
+        "android_client_info": {
+          "package_name": "com.hoarauthomas.weather"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "734864996445-cus0jntaps74893e8qp42nlb5laadlc8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeNSY8NQaI2CHoH1rSHA_IQQIQ-0C1Hcg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "734864996445-cus0jntaps74893e8qp42nlb5laadlc8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

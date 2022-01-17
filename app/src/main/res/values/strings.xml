@@ -2,13 +2,14 @@
     <string name="app_name">Weather</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="text_bottom_1">Weather</string>
-    <string name="text_bottom_2">Github</string>
+    <string name="menu_weather">Weather API</string>
+    <string name="menu_firestore">Firestore</string>
     <string name="city_name_text">city_name_text</string>
 
     <string name="city_add_text_btn">Confirm</string>
     <string name="city_cancel_text_btn">Cancel</string>
     <string name="hint_city_name">Enter city name here</string>
     <string name="city_name_view">city_name_view</string>
+    <string name="text_system">System</string>
 
 </resources>
