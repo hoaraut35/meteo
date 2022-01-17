@@ -9,6 +9,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ChatViewModel @Inject constructor(private val chatRepository: ChatRepository):ViewModel(){
 
+    //get all messages for android tchat
     fun getAllMessageForChat(chat : String):Query{
         return chatRepository.getAllMessageForChat(chat)
     }

@@ -24,5 +24,4 @@ class ChatRepository @Inject constructor()  {
             .limit(50)
     }
 
-
 }

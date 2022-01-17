@@ -8,10 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.hoarauthomas.weather.R
 import com.hoarauthomas.weather.databinding.FragmentCitiesBinding
 import com.hoarauthomas.weather.databinding.FragmentGithubBinding
 import dagger.hilt.android.AndroidEntryPoint
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.Query
+import com.hoarauthomas.weather.models.ChatMessage
+
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -43,7 +49,7 @@ class GithubFragment : Fragment() {
         binding = FragmentGithubBinding.inflate(inflater, container, false)
         val view = binding.root
 
-
+        val recyclerView: RecyclerView = binding.firestoreRecyclerview
 
 
          viewModelChat.getAllMessageForChat("android").addSnapshotListener { value, error ->
@@ -53,8 +59,10 @@ class GithubFragment : Fragment() {
             }
              else{
                 Log.i("[SQL]","query "+ value.documents.toString() )
+                setupRecyclerView(recyclerView)
             }
         }
+
 
 
         return view
@@ -65,6 +73,21 @@ class GithubFragment : Fragment() {
 
 
     }
+
+    private fun setupRecyclerView(recyclerView: RecyclerView){
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        recyclerView.adapter = ChatAdapter(generateOptionsForAdapter(viewModelChat.getAllMessageForChat("android")))
+    }
+
+
+    private fun generateOptionsForAdapter(query: Query): FirestoreRecyclerOptions<ChatMessage> {
+        return FirestoreRecyclerOptions.Builder<ChatMessage>()
+            .setQuery(query, ChatMessage::class.java)
+            .setLifecycleOwner(this)
+            .build()
+    }
+
+
 
     companion object {
 
