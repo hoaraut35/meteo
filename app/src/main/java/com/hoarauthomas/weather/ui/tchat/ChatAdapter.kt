@@ -9,7 +9,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.hoarauthomas.weather.databinding.ItemChatBinding
 import com.hoarauthomas.weather.models.ChatMessage
 
-
 class ChatAdapter(options: FirestoreRecyclerOptions<ChatMessage>) :
     FirestoreRecyclerAdapter<ChatMessage, ChatAdapter.ViewHolder>(options) {
 
@@ -18,18 +17,14 @@ class ChatAdapter(options: FirestoreRecyclerOptions<ChatMessage>) :
         return ViewHolder(binding)
     }
 
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int, model: ChatMessage) {
-
         holder.textViewDate.text = model.dateCreated
         holder.textViewPriority.text = model.message
-
     }
 
     inner class ViewHolder(binding: ItemChatBinding) : RecyclerView.ViewHolder(binding.root) {
         var textViewDate : TextView = binding.messageDate
         var textViewPriority: TextView = binding.messageText
     }
-
 
 }

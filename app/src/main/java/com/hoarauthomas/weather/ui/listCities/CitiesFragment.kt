@@ -62,9 +62,17 @@ class CitiesFragment : Fragment() {
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
 
+        viewModelCities.weatherLiveData().observe(viewLifecycleOwner) { cityData ->
+            Log.i("[API]", "city :" + cityData.name.toString())
+        }
+
+        //get room data...
         viewModelCities.getCities().observe(viewLifecycleOwner) { listCities ->
 
             if (listCities != null) {
+                listCities.forEach { city ->
+                    viewModelCities.getWeatherByCity(city.name.toString(), "fr")
+                }
 
                 setupRecyclerView(recyclerView, listCities)
 
@@ -98,7 +106,10 @@ class CitiesFragment : Fragment() {
                         }
 
                         if (direction == ItemTouchHelper.LEFT) {
-                           openFrag(1,viewHolder.itemView.findViewById<TextView>(R.id.city_name_view).text.toString())
+                            openFrag(
+                                1,
+                                viewHolder.itemView.findViewById<TextView>(R.id.city_name_view).text.toString()
+                            )
                         }
 
 
@@ -222,12 +233,16 @@ class CitiesFragment : Fragment() {
         recyclerView.adapter = CitiesAdapter(listCities)
     }
 
-    private fun openFrag(i: Int, city:String) {
+    private fun openFrag(i: Int, city: String) {
 
         val ft = parentFragmentManager.beginTransaction()
 
         when (i) {
-            1 -> ft.replace(R.id.mainFragmentContainer, CityDetails.newInstance(city, "y"),"detail").addToBackStack("detail")
+            1 -> ft.replace(
+                R.id.mainFragmentContainer,
+                CityDetails.newInstance(city, "y"),
+                "detail"
+            ).addToBackStack("detail")
         }
 
 

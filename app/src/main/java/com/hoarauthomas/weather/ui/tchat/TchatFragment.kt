@@ -15,7 +15,6 @@ import com.hoarauthomas.weather.databinding.FragmentGithubBinding
 import com.hoarauthomas.weather.models.ChatMessage
 import dagger.hilt.android.AndroidEntryPoint
 
-
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
@@ -42,20 +41,17 @@ class GithubFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-
         binding = FragmentGithubBinding.inflate(inflater, container, false)
         val view = binding.root
 
         val recyclerView: RecyclerView = binding.firestoreRecyclerview
 
+        viewModelChat.getAllMessageForChat("android").addSnapshotListener { value, _ ->
 
-         viewModelChat.getAllMessageForChat("android").addSnapshotListener { value, _ ->
-
-            if (value!!.isEmpty){
-                Log.i("[SQL]","query null")
-            }
-             else{
-                Log.i("[SQL]","query "+ value.documents.toString() )
+            if (value!!.isEmpty) {
+                Log.i("[SQL]", "query null")
+            } else {
+                Log.i("[SQL]", "query " + value.documents.toString())
                 setupRecyclerView(recyclerView)
             }
         }
@@ -64,18 +60,13 @@ class GithubFragment : Fragment() {
 
         return view
 
-
-
-
-
-
     }
 
-    private fun setupRecyclerView(recyclerView: RecyclerView){
+    private fun setupRecyclerView(recyclerView: RecyclerView) {
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        recyclerView.adapter = ChatAdapter(generateOptionsForAdapter(viewModelChat.getAllMessageForChat("android")))
+        recyclerView.adapter =
+            ChatAdapter(generateOptionsForAdapter(viewModelChat.getAllMessageForChat("android")))
     }
-
 
     private fun generateOptionsForAdapter(query: Query): FirestoreRecyclerOptions<ChatMessage> {
         return FirestoreRecyclerOptions.Builder<ChatMessage>()
@@ -83,8 +74,6 @@ class GithubFragment : Fragment() {
             .setLifecycleOwner(this)
             .build()
     }
-
-
 
     companion object {
 

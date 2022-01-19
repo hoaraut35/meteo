@@ -1,6 +1,7 @@
 package com.hoarauthomas.weather.ui.listCities
 
 import androidx.lifecycle.*
+import com.hoarauthomas.weather.api.ResponseWeather
 import com.hoarauthomas.weather.models.City
 import com.hoarauthomas.weather.repositories.DatabaseRepository
 import com.hoarauthomas.weather.repositories.WeatherRepository
@@ -26,5 +27,16 @@ class CitiesViewModel @Inject constructor(private val databaseRepository: Databa
 
     fun deleteCity(city: City) = viewModelScope.launch { databaseRepository.deleteCity(city) }
 
+
+
+    //to query weather...
+    fun getWeatherByCity(city: String, country:String){
+        weatherRepository.getWeatherByCity(city,country)
+    }
+
+    //to observe weather result ...
+    fun weatherLiveData(): LiveData<ResponseWeather> {
+        return weatherRepository.getWeatherLiveData()
+    }
 
 }
