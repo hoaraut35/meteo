@@ -33,7 +33,6 @@ private const val ARG_PARAM2 = "param2"
 @AndroidEntryPoint
 class CitiesFragment : Fragment() {
 
-
     private val viewModelCities: CitiesViewModel by viewModels()
 
     private lateinit var binding: FragmentCitiesBinding
@@ -62,16 +61,46 @@ class CitiesFragment : Fragment() {
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
 
+
+        viewModelCities.getViewState().observe(viewLifecycleOwner){
+
+        }
+
+
         viewModelCities.weatherLiveData().observe(viewLifecycleOwner) { cityData ->
             Log.i("[API]", "city :" + cityData.name.toString())
+
+            //update firestore
+            viewModelCities.createCityDetail(cityData,"${cityData.name}-${cityData.sys?.country}")
         }
 
         //get room data...
         viewModelCities.getCities().observe(viewLifecycleOwner) { listCities ->
 
+
             if (listCities != null) {
+
+                //get firestore weather data for each city...
+                listCities.forEach { city ->
+                    viewModelCities.callCityDetail("${city.name}-${city.countryCode}")
+                }
+
+                viewModelCities.getCityDetail().observe(viewLifecycleOwner){myCityDetailList ->
+
+                    myCityDetailList.forEach {
+                        Log.i("[API]","show temp:" + it.main?.temp)
+                        Toast.makeText(
+                            (requireContext()),
+                            "${it.main?.temp} in ${it.name}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                }
+
                 listCities.forEach { city ->
                     viewModelCities.getWeatherByCity(city.name.toString(), "fr")
+                    viewModelCities.createCity(city)
                 }
 
                 setupRecyclerView(recyclerView, listCities)
