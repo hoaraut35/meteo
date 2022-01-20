@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.hoarauthomas.weather.R
+import com.hoarauthomas.weather.api.ResponseWeather
 import com.hoarauthomas.weather.databinding.FragmentCitiesBinding
 import com.hoarauthomas.weather.models.City
 import com.hoarauthomas.weather.ui.detailcity.CityDetails
@@ -62,162 +63,132 @@ class CitiesFragment : Fragment() {
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
 
 
-        viewModelCities.getViewState().observe(viewLifecycleOwner){
+        //observe the viewState ...
+        viewModelCities.getViewStateForUI().observe(viewLifecycleOwner) { citiesViewState ->
+            if (citiesViewState.citiesList != null ) {
 
+                if (citiesViewState.citiesListAPIResponse != null){
+                    setupRecyclerView(
+                        recyclerView, citiesViewState.citiesList!!,citiesViewState.citiesListAPIResponse!!
+                    )
+                }
+
+
+            }
         }
 
+        //******************************************************************************************
 
-        viewModelCities.weatherLiveData().observe(viewLifecycleOwner) { cityData ->
-            Log.i("[API]", "city :" + cityData.name.toString())
+        val simpleCallback = object :
+            ItemTouchHelper.SimpleCallback(
+                0,
+                ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+            ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                Log.i("[TOUCH]", "touch")
+                return true
+            }
 
-            //update firestore
-            viewModelCities.createCityDetail(cityData,"${cityData.name}-${cityData.sys?.country}")
-        }
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
 
-        //get room data...
-        viewModelCities.getCities().observe(viewLifecycleOwner) { listCities ->
-
-
-            if (listCities != null) {
-
-                //get firestore weather data for each city...
-                listCities.forEach { city ->
-                    viewModelCities.callCityDetail("${city.name}-${city.countryCode}")
-                }
-
-                viewModelCities.getCityDetail().observe(viewLifecycleOwner){myCityDetailList ->
-
-                    myCityDetailList.forEach {
-                        Log.i("[API]","show temp:" + it.main?.temp)
-                        Toast.makeText(
-                            (requireContext()),
-                            "${it.main?.temp} in ${it.name}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-
-                }
-
-                listCities.forEach { city ->
-                    viewModelCities.getWeatherByCity(city.name.toString(), "fr")
-                    viewModelCities.createCity(city)
-                }
-
-                setupRecyclerView(recyclerView, listCities)
-
-                val simpleCallback = object :
-                    ItemTouchHelper.SimpleCallback(
-                        0,
-                        ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-                    ) {
-                    override fun onMove(
-                        recyclerView: RecyclerView,
-                        viewHolder: RecyclerView.ViewHolder,
-                        target: RecyclerView.ViewHolder
-                    ): Boolean {
-                        Log.i("[TOUCH]", "touch")
-                        return true
-                    }
-
-                    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
-                        if (direction == ItemTouchHelper.RIGHT) {
-                            //swipe to the right
-                            viewModelCities.deleteCity(
-                                City(
-                                    id = viewHolder.itemView.findViewById<TextView>(
-                                        R.id.city_name_view
-                                    ).tag as Int
-                                )
-                            )
-
-
-                        }
-
-                        if (direction == ItemTouchHelper.LEFT) {
-                            openFrag(
-                                1,
-                                viewHolder.itemView.findViewById<TextView>(R.id.city_name_view).text.toString()
-                            )
-                        }
-
-
-                    }
-
-                    override fun onChildDraw(
-                        c: Canvas,
-                        recyclerView: RecyclerView,
-                        viewHolder: RecyclerView.ViewHolder,
-                        dX: Float,
-                        dY: Float,
-                        actionState: Int,
-                        isCurrentlyActive: Boolean
-                    ) {
-                        super.onChildDraw(
-                            c,
-                            recyclerView,
-                            viewHolder,
-                            dX,
-                            dY,
-                            actionState,
-                            isCurrentlyActive
+                if (direction == ItemTouchHelper.RIGHT) {
+                    //swipe to the right
+                    viewModelCities.deleteCity(
+                        City(
+                            id = viewHolder.itemView.findViewById<TextView>(
+                                R.id.city_name_view
+                            ).tag as Int
                         )
+                    )
 
-
-
-                        RecyclerViewSwipeDecorator.Builder(
-                            c,
-                            recyclerView,
-                            viewHolder,
-                            dX,
-                            dY,
-                            actionState,
-                            isCurrentlyActive
-                        )
-
-                            .addBackgroundColor(
-                                ContextCompat.getColor(
-                                    requireContext(),
-                                    R.color.cardview_shadow_start_color
-                                )
-                            )
-
-                            //open detail
-                            .addSwipeLeftActionIcon(R.drawable.ic_baseline_view_list_24)
-                            .addSwipeLeftBackgroundColor(
-                                ContextCompat.getColor(
-                                    requireContext(),
-                                    R.color.green
-                                )
-                            )
-
-                            //delete
-                            .addSwipeRightActionIcon(R.drawable.ic_baseline_delete_24)
-                            .addSwipeRightBackgroundColor(
-                                ContextCompat.getColor(
-                                    requireContext(),
-                                    R.color.red
-                                )
-                            )
-                            .create()
-                            .decorate()
-
-
-                    }
 
                 }
 
-                val itemTouchHelper = ItemTouchHelper(simpleCallback)
-                itemTouchHelper.attachToRecyclerView(recyclerView)
+                if (direction == ItemTouchHelper.LEFT) {
+                    openFrag(
+                        1,
+                        viewHolder.itemView.findViewById<TextView>(R.id.city_name_view).text.toString()
+                    )
+                }
+
+
+            }
+
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
+                super.onChildDraw(
+                    c,
+                    recyclerView,
+                    viewHolder,
+                    dX,
+                    dY,
+                    actionState,
+                    isCurrentlyActive
+                )
+
+
+
+                RecyclerViewSwipeDecorator.Builder(
+                    c,
+                    recyclerView,
+                    viewHolder,
+                    dX,
+                    dY,
+                    actionState,
+                    isCurrentlyActive
+                )
+
+                    .addBackgroundColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.cardview_shadow_start_color
+                        )
+                    )
+
+                    //open detail
+                    .addSwipeLeftActionIcon(R.drawable.ic_baseline_view_list_24)
+                    .addSwipeLeftBackgroundColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.green
+                        )
+                    )
+
+                    //delete
+                    .addSwipeRightActionIcon(R.drawable.ic_baseline_delete_24)
+                    .addSwipeRightBackgroundColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.red
+                        )
+                    )
+                    .create()
+                    .decorate()
 
 
             }
 
         }
 
-        viewModelCities.cityInsertedLive().observe(viewLifecycleOwner) {
-            Toast.makeText(requireContext(), "new city added ", Toast.LENGTH_LONG).show()
-        }
+        val itemTouchHelper = ItemTouchHelper(simpleCallback)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
+
+        //******************************************************************************************
+
+//        viewModelCities.cityInsertedLive().observe(viewLifecycleOwner) {
+//            Toast.makeText(requireContext(), "new city added ", Toast.LENGTH_LONG).show()
+//        }
 
         binding.cityAddBtn.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
@@ -257,9 +228,10 @@ class CitiesFragment : Fragment() {
 
     }
 
-    private fun setupRecyclerView(recyclerView: RecyclerView, listCities: List<City>) {
+    //private fun setupRecyclerView(recyclerView: RecyclerView, listCities: List<City>) {
+    private fun setupRecyclerView(recyclerView: RecyclerView, listCities: List<City>, listCitiesAPIResponse : List<ResponseWeather>) {
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        recyclerView.adapter = CitiesAdapter(listCities)
+        recyclerView.adapter = CitiesAdapter(listCities, listCitiesAPIResponse)
     }
 
     private fun openFrag(i: Int, city: String) {

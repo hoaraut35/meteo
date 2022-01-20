@@ -12,13 +12,13 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class WeatherRepository @Inject constructor(private val weatherAPI : WeatherAPI) {
+class WeatherAPIRepository @Inject constructor(private val weatherAPI : WeatherAPI) {
 
     private var mutableLiveDataWeather = MutableLiveData<ResponseWeather>()
     private var mutableLiveDataWeatherSearchFlag = MutableLiveData<Boolean>()
 
     //for ViewModel...
-    fun getWeatherLiveData(): LiveData<ResponseWeather>{
+    fun getCityWeatherAPIResponse(): LiveData<ResponseWeather>{
         return mutableLiveDataWeather
     }
 
@@ -42,13 +42,10 @@ class WeatherRepository @Inject constructor(private val weatherAPI : WeatherAPI)
                     mutableLiveDataWeather.value = response.body()!!
                     mutableLiveDataWeatherSearchFlag.value = false
                 }
-
             }
 
             override fun onFailure(call: Call<ResponseWeather>, t: Throwable) {
-
                    mutableLiveDataWeatherSearchFlag.value = true
-
             }
 
         })
