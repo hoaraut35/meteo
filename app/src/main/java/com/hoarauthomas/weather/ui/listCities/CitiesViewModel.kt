@@ -37,22 +37,22 @@ class CitiesViewModel @Inject constructor(
         //first source : Room cities list ...
         myViewStateCitiesMediator.addSource(getCitiesRoom) { listCities ->
             if (listCities != null) {
-                combine(listCities, getCityDataAPI.value, weatherFirebaseRepository.weatherListResultFirestose)
+                combine(listCities, getCityDataAPI.value, weatherFirebaseRepository.weatherListResultFirestore)
             }
         }
 
         //second source : city data api
         myViewStateCitiesMediator.addSource(getCityDataAPI) { cityDataResponse ->
             if (cityDataResponse != null) {
-                combine(getCitiesRoom.value, cityDataResponse, weatherFirebaseRepository.weatherListResultFirestose)
+                combine(getCitiesRoom.value, cityDataResponse, weatherFirebaseRepository.weatherListResultFirestore)
             }
         }
 
         //third source : get all cities data from firebase
         myViewStateCitiesMediator.addSource(getCityDataFirestore) { weatherCityResultFirestore ->
             if (weatherCityResultFirestore != null) {
-                weatherFirebaseRepository.weatherListResultFirestose.add(weatherCityResultFirestore)
-                combine(getCitiesRoom.value, getCityDataAPI.value, weatherFirebaseRepository.weatherListResultFirestose)
+                weatherFirebaseRepository.weatherListResultFirestore.add(weatherCityResultFirestore)
+                combine(getCitiesRoom.value, getCityDataAPI.value, weatherFirebaseRepository.weatherListResultFirestore)
             }
         }
     }

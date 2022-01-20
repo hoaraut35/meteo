@@ -15,7 +15,7 @@ import javax.inject.Singleton
 @Singleton
 class WeatherFirebaseRepository @Inject constructor() {
 
-    val weatherListResultFirestore = mutableListOf<ResponseWeather>()
+    val weatherListResultFirestose = mutableListOf<ResponseWeather>()
 
     private val weatherCollection: String = "weather"
     private val weatherCollectionDetail: String = "weatherDetail"
