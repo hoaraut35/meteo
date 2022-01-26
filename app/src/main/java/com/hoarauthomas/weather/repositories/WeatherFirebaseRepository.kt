@@ -15,8 +15,10 @@ import javax.inject.Singleton
 @Singleton
 class WeatherFirebaseRepository @Inject constructor() {
 
-    val weatherListResultFirestose = mutableListOf<ResponseWeather>()
+    //public
+    val weatherListResultFirestore = mutableListOf<ResponseWeather>()
 
+    //private
     private val weatherCollection: String = "weather"
     private val weatherCollectionDetail: String = "weatherDetail"
     private val mutableOpenWeatherFirestore: MutableLiveData<ResponseWeather> =
@@ -26,7 +28,16 @@ class WeatherFirebaseRepository @Inject constructor() {
         return FirebaseFirestore.getInstance().collection(weatherCollection)
     }
 
-    fun getAllWeather(): LiveData<List<City>> {
+    //get the detail info for a city
+    private fun getWeatherInfoCollection(cityAndCountryName: String): CollectionReference {
+        return FirebaseFirestore.getInstance().collection(weatherCollection)
+            .document(cityAndCountryName)
+            .collection(
+                weatherCollectionDetail
+            )
+    }
+
+    fun getAllCitiesFirestore(): LiveData<List<City>> {
 
         val myCitiesListFromFirestore: MutableLiveData<List<City>> = MutableLiveData<List<City>>()
 
@@ -37,9 +48,10 @@ class WeatherFirebaseRepository @Inject constructor() {
             if (value != null) {
                 for (document in value.documents) {
                     myListCities.add(document.toObject(City::class.java)!!)
-                }
 
+                }
             }
+            myCitiesListFromFirestore.setValue(myListCities)
         }
 
         return myCitiesListFromFirestore
@@ -52,17 +64,10 @@ class WeatherFirebaseRepository @Inject constructor() {
             .addOnFailureListener { Log.i("[API]", "error") }
     }
 
-    //get the detail info for a city
-    private fun getWeatherInfoCollection(cityAndCountryName: String): CollectionReference {
-        return FirebaseFirestore.getInstance().collection(weatherCollection)
-            .document(cityAndCountryName)
-            .collection(
-                weatherCollectionDetail
-            )
-    }
+
 
     //create cityDetail
-    fun createCityWeatherDetail(
+    fun createCityDataWeatherFirestore(
         openWeatherResponse: ResponseWeather,
         cityAndCountryName: String
     ) {
@@ -70,7 +75,7 @@ class WeatherFirebaseRepository @Inject constructor() {
             .set(openWeatherResponse)
     }
 
-    fun getCityDataFirestore(cityAndCountryName: String) {
+    fun callCityDataRequestFirestore(cityAndCountryName: String) {
         getWeatherInfoCollection(cityAndCountryName)
             .addSnapshotListener { value: QuerySnapshot?, _: FirebaseFirestoreException? ->
                 if (value != null) {
@@ -79,12 +84,15 @@ class WeatherFirebaseRepository @Inject constructor() {
                             document.toObject(ResponseWeather::class.java)
                         mutableOpenWeatherFirestore.value = openWeatherResponse!!
                     }
+                }else
+                {
+                    Log.i("[API]","Error request API openweather")
                 }
             }
     }
 
     // all data cities
-    fun getAllDataCityFirestore(): LiveData<ResponseWeather> {
+    fun getCityDataFirestore(): LiveData<ResponseWeather> {
         return mutableOpenWeatherFirestore
     }
 

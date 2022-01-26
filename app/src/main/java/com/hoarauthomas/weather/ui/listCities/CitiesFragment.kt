@@ -62,17 +62,10 @@ class CitiesFragment : Fragment() {
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
 
-
         //observe the viewState ...
         viewModelCities.getViewStateForUI().observe(viewLifecycleOwner) { citiesViewState ->
-            if (citiesViewState.citiesList != null ) {
-
-                if (citiesViewState.citiesListAPIResponse != null){
-                    setupRecyclerView(
-                        recyclerView, citiesViewState.citiesList!!,citiesViewState.citiesListAPIResponse!!
-                    )
-                }
-
+            if (!citiesViewState.citiesList.isNullOrEmpty()) {
+               setupRecyclerView(recyclerView, citiesViewState.citiesList!!)
 
             }
         }
@@ -109,7 +102,7 @@ class CitiesFragment : Fragment() {
                 }
 
                 if (direction == ItemTouchHelper.LEFT) {
-                    openFrag(
+                    openFragment(
                         1,
                         viewHolder.itemView.findViewById<TextView>(R.id.city_name_view).text.toString()
                     )
@@ -186,10 +179,6 @@ class CitiesFragment : Fragment() {
 
         //******************************************************************************************
 
-//        viewModelCities.cityInsertedLive().observe(viewLifecycleOwner) {
-//            Toast.makeText(requireContext(), "new city added ", Toast.LENGTH_LONG).show()
-//        }
-
         binding.cityAddBtn.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Add new city")
@@ -199,7 +188,7 @@ class CitiesFragment : Fragment() {
                     val text =
                         (dialog as androidx.appcompat.app.AlertDialog).findViewById<EditText>(R.id.city_add_edit)?.text.toString()
 
-                    viewModelCities.insertCity(City(name = text))
+                    viewModelCities.insertCity(City(name = text, countryCode = "FR"))
 
 
                 }
@@ -218,7 +207,7 @@ class CitiesFragment : Fragment() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Are you sure ?")
             .setMessage("You can delete this city,  must enter a new name to create a city ...")
-            .setPositiveButton(resources.getString(R.string.city_add_text_btn)) { dialog, _ ->
+            .setPositiveButton(resources.getString(R.string.city_add_text_btn)) { _, _ ->
 
             }
             .setNegativeButton(resources.getString(R.string.city_cancel_text_btn)) { _, _ ->
@@ -229,12 +218,12 @@ class CitiesFragment : Fragment() {
     }
 
     //private fun setupRecyclerView(recyclerView: RecyclerView, listCities: List<City>) {
-    private fun setupRecyclerView(recyclerView: RecyclerView, listCities: List<City>, listCitiesAPIResponse : List<ResponseWeather>) {
+    private fun setupRecyclerView(recyclerView: RecyclerView, listCities: List<City>) {
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        recyclerView.adapter = CitiesAdapter(listCities, listCitiesAPIResponse)
+        recyclerView.adapter = CitiesAdapter(listCities)
     }
 
-    private fun openFrag(i: Int, city: String) {
+    private fun openFragment(i: Int, city: String) {
 
         val ft = parentFragmentManager.beginTransaction()
 

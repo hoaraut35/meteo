@@ -9,9 +9,8 @@ interface WeatherAPI {
 
     //https://developers.google.com/maps/documentation/android-sdk/get-api-key
     //https://openweathermap.org/
-   // @GET("weather?q={city},{country}&appid=${BuildConfig.OPENWEATHER_API_KEY}&units=metric&lang=fr")
     @GET("weather?appid=${BuildConfig.OPENWEATHER_API_KEY}&units=metric&lang=fr")
-    fun getWeatherByCity(
+    fun callWeatherByCity(
         @Query("q") cityAndCountry: String
     ): Call<ResponseWeather>
 

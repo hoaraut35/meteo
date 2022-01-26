@@ -9,5 +9,4 @@ data class CitiesViewState (
     var citiesList : List<City>? = null,
     var citiesListAPIResponse : List<ResponseWeather>? = null
 
-
 )

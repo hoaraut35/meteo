@@ -8,7 +8,7 @@ import com.hoarauthomas.weather.databinding.ItemCityBinding
 import com.hoarauthomas.weather.models.City
 
 //class CitiesAdapter(private val cities: List<City>) :
-class CitiesAdapter(private val cities:List<City>, private val citiesAPIResult: List<ResponseWeather>) :
+class CitiesAdapter(private val cities:List<City>) :
     RecyclerView.Adapter<CitiesAdapter.ViewHolder>() {
 
     class ViewHolder(binding: ItemCityBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -22,17 +22,8 @@ class CitiesAdapter(private val cities:List<City>, private val citiesAPIResult: 
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-
         holder.cityNameView.text = cities[position].name
         holder.cityNameView.tag = cities[position].id
-
-        citiesAPIResult.forEach { response ->
-            if (holder.cityNameView.text.toString() == response.name.toString()){
-                holder.cityTemperature.text = response.main?.temp.toString()
-            }
-        }
-
     }
 
     override fun getItemCount(): Int {

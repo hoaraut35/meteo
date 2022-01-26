@@ -1,5 +1,6 @@
 package com.hoarauthomas.weather.ui.listCities
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.hoarauthomas.weather.api.ResponseWeather
 import com.hoarauthomas.weather.models.City
@@ -24,35 +25,59 @@ class CitiesViewModel @Inject constructor(
 
     //sources...
     private var getCitiesRoom: LiveData<List<City>> = databaseRepository.getCities().asLiveData()
-
-    private var getCityDataAPI: LiveData<ResponseWeather> =
-        weatherAPIRepository.getCityWeatherAPIResponse()
-
-    private var getCityDataFirestore: LiveData<ResponseWeather> =
-        weatherFirebaseRepository.getAllDataCityFirestore()
+    private var getCitiesFirestore = weatherFirebaseRepository.getAllCitiesFirestore()
+    private var getCityDataAPI: LiveData<ResponseWeather> = weatherAPIRepository.getCityWeatherAPIResponse()
+    private var getCityDataFirestore: LiveData<ResponseWeather> = weatherFirebaseRepository.getCityDataFirestore()
 
     //init mediator observer with all sources...
     init {
 
-        //first source : Room cities list ...
+        //observe Room cities list ...
         myViewStateCitiesMediator.addSource(getCitiesRoom) { listCities ->
             if (listCities != null) {
-                combine(listCities, getCityDataAPI.value, weatherFirebaseRepository.weatherListResultFirestore)
+                combine(
+                    listCities,
+                    getCitiesFirestore.value,
+                    getCityDataAPI.value,
+                    weatherFirebaseRepository.weatherListResultFirestore
+                )
             }
         }
 
-        //second source : city data api
+        //Observe city data api result
         myViewStateCitiesMediator.addSource(getCityDataAPI) { cityDataResponse ->
             if (cityDataResponse != null) {
-                combine(getCitiesRoom.value, cityDataResponse, weatherFirebaseRepository.weatherListResultFirestore)
+                combine(
+                    getCitiesRoom.value,
+                    getCitiesFirestore.value,
+                    cityDataResponse,
+                    weatherFirebaseRepository.weatherListResultFirestore
+                )
             }
         }
 
-        //third source : get all cities data from firebase
+        //Observe city weather data from API
         myViewStateCitiesMediator.addSource(getCityDataFirestore) { weatherCityResultFirestore ->
             if (weatherCityResultFirestore != null) {
                 weatherFirebaseRepository.weatherListResultFirestore.add(weatherCityResultFirestore)
-                combine(getCitiesRoom.value, getCityDataAPI.value, weatherFirebaseRepository.weatherListResultFirestore)
+                combine(
+                    getCitiesRoom.value,
+                    getCitiesFirestore.value,
+                    getCityDataAPI.value,
+                    weatherFirebaseRepository.weatherListResultFirestore
+                )
+            }
+        }
+
+        //observe list cities from firebase without weather data
+        myViewStateCitiesMediator.addSource(getCitiesFirestore) { citiesFromFirestore ->
+            if (citiesFromFirestore != null) {
+                combine(
+                    getCitiesRoom.value,
+                    citiesFromFirestore,
+                    getCityDataAPI.value,
+                    weatherFirebaseRepository.weatherListResultFirestore,
+                )
             }
         }
     }
@@ -60,30 +85,26 @@ class CitiesViewModel @Inject constructor(
     //combine all source in viewState
     private fun combine(
         myListOfCitiesRoom: List<City>?,
+        myCitiesFromFirestore: List<City>?,
         myCityData: ResponseWeather?,
         myListCityDataFirestore: List<ResponseWeather>?
+
     ) {
 
-        //si la liste des villes n'es pas nulle alors...
-        if (!myListOfCitiesRoom.isNullOrEmpty()) {
-
-            if (myListCityDataFirestore.isNullOrEmpty()) {
-                myListOfCitiesRoom.forEach { myCity ->
-                    weatherFirebaseRepository.getCityDataFirestore(myCity.name + "-" + myCity.countryCode)
-                }
-            }
-
-        }
 
         //add logic here...
         val viewState = CitiesViewState()
-        viewState.cityTemperature = myCityData?.main.toString()
+
+        if (!myListOfCitiesRoom.isNullOrEmpty()) {
+
+        }
+
         viewState.citiesList = myListOfCitiesRoom
-        viewState.citiesListAPIResponse = myListCityDataFirestore
 
         //we return the view
         myViewStateCitiesMediator.value = viewState
 
+        Log.i("","")
     }
 
     //observe by fragment ui
@@ -111,7 +132,7 @@ class CitiesViewModel @Inject constructor(
 
     //to query weather...
     fun getWeatherByCity(city: String, country: String) {
-        weatherAPIRepository.getWeatherByCity(city, country)
+        weatherAPIRepository.callWeatherByCity(city, country)
     }
 
     //add city to firestore
@@ -121,7 +142,7 @@ class CitiesViewModel @Inject constructor(
 
     //add city detail to firestore
     fun createCityDetail(responseCityDetail: ResponseWeather, cityAndCountry: String) {
-        weatherFirebaseRepository.createCityWeatherDetail(responseCityDetail, cityAndCountry)
+        weatherFirebaseRepository.createCityDataWeatherFirestore(responseCityDetail, cityAndCountry)
     }
 
     //get city detail from api

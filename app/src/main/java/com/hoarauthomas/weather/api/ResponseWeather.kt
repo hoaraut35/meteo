@@ -29,7 +29,7 @@ data class ResponseWeather(
 	val weather: List<WeatherItem?>? = null,
 
 	@field:SerializedName("name")
-	val name: String? = null,
+    var name: String? = null,
 
 	@field:SerializedName("cod")
 	val cod: Int? = null,

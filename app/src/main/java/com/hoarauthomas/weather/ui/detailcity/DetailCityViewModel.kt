@@ -13,7 +13,7 @@ class DetailCityViewModel @Inject constructor(private val weatherAPIRepository: 
 
     //to query weather...
     fun getWeatherByCity(city: String, country:String){
-        weatherAPIRepository.getWeatherByCity(city,country)
+        weatherAPIRepository.callWeatherByCity(city,country)
     }
 
     //to observe weather result ...

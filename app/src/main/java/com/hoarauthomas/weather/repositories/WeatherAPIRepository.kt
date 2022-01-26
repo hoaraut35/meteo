@@ -1,6 +1,5 @@
 package com.hoarauthomas.weather.repositories
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.hoarauthomas.weather.api.ResponseWeather
@@ -28,11 +27,11 @@ class WeatherAPIRepository @Inject constructor(private val weatherAPI : WeatherA
     }
 
     //for query API...
-    fun getWeatherByCity(city: String, country: String){
+    fun callWeatherByCity(city: String, country: String){
 
         val cityAndCountry = "$city,$country"
 
-        weatherAPI.getWeatherByCity(cityAndCountry).enqueue(object : Callback<ResponseWeather> {
+        weatherAPI.callWeatherByCity(cityAndCountry).enqueue(object : Callback<ResponseWeather> {
 
             override fun onResponse(
                 call: Call<ResponseWeather>,

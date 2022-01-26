@@ -51,7 +51,7 @@
                 app:layout_constraintLeft_toRightOf="@id/city_name_view"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:text="temperature"
+
 
                 >
 
