@@ -3,6 +3,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_weather">Weather API</string>
+    <string name="menu_player">Exo Player</string>
+
     <string name="menu_firestore">Firestore</string>
     <string name="city_name_text">city_name_text</string>
 

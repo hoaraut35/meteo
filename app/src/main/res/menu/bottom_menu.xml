@@ -8,10 +8,17 @@
         android:title="@string/menu_weather"/>
 
     <item
-        android:id="@+id/page_2"
+        android:id="@+id/player"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_ondemand_video_24"
+        android:title="@string/menu_player"/>
+
+    <item
+        android:id="@+id/firestore_page"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_cloud_24"
         android:title="@string/menu_firestore"/>
+
 
     <item
         android:id="@+id/system_page"

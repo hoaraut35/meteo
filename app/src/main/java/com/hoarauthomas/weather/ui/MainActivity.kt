@@ -14,9 +14,12 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.hoarauthomas.weather.R
 import com.hoarauthomas.weather.databinding.ActivityMainBinding
+import com.hoarauthomas.weather.ui.Player.PlayerFragment
+import com.hoarauthomas.weather.ui.canon.CanonFragment
 import com.hoarauthomas.weather.ui.listCities.CitiesFragment
 import com.hoarauthomas.weather.ui.tchat.GithubFragment
 import com.hoarauthomas.weather.ui.system.SystemFragment
+import com.hoarauthomas.weather.ui.webview.WebViewFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -42,13 +45,20 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
 
-                R.id.page_2 -> {
+                R.id.player -> {
+                    openFrag(4)
+                    true
+                }
+
+                R.id.firestore_page -> {
                     openFrag(2)
                     true
                 }
 
+
+
                 R.id.system_page -> {
-                    openFrag(3)
+                    openFrag(5)
                     true
                 }
 
@@ -102,6 +112,9 @@ class MainActivity : AppCompatActivity() {
             1 -> ft.replace(R.id.mainFragmentContainer, CitiesFragment.newInstance("t", "y"))
             2 -> ft.replace(R.id.mainFragmentContainer, GithubFragment.newInstance("t", "y"))
             3 -> ft.replace(R.id.mainFragmentContainer, SystemFragment.newInstance("tt","tt"))
+            4 -> ft.replace(R.id.mainFragmentContainer, PlayerFragment.newInstance("tt","tt"))
+            5 -> ft.replace(R.id.mainFragmentContainer, WebViewFragment.newInstance("",""))
+
         }
 
         ft.commit()

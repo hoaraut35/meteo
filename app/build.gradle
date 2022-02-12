@@ -41,6 +41,18 @@ android {
 
 dependencies {
 
+   // implementation 'com.github.HaarigerHarald:android-youtubeExtractor:master-SNAPSHOT'
+
+    implementation('com.google.apis:google-api-services-youtube:v3-rev222-1.25.0') {
+        exclude group: 'org.apache.httpcomponents'
+    }
+
+
+    implementation 'org.postgresql:postgresql:42.2.5'
+
+    // jsoup HTML parser library @ https://jsoup.org/
+    implementation 'org.jsoup:jsoup:1.14.3'
+
     testImplementation 'org.mockito:mockito-core:4.3.1'
     testImplementation 'junit:junit:4.13.2'
 
@@ -92,6 +104,10 @@ dependencies {
 
     implementation("androidx.fragment:fragment-ktx:1.4.0")
 
+    implementation 'com.google.android.exoplayer:exoplayer:2.16.1'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.X.X'
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.X.X'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.X.X'
 
 }
 
